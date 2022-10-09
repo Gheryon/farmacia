@@ -1,4 +1,5 @@
-  
+  <!-- css para la compra-->
+  <link rel="stylesheet" href="../css/compra.css">
   <!-- css para el carrito-->
   <link rel="stylesheet" href="../css/main.css">
   <!-- Google Font: Source Sans Pro -->
@@ -42,7 +43,7 @@
 
               </tbody>
             </table>
-            <a href="#" class="btn btn-danger btn-block">Procesar compra</a>
+            <a href="#" id="procesar-pedido" class="btn btn-danger btn-block">Procesar compra</a>
             <a href="#" id="vaciar-carrito" class="btn btn-primary btn-block">Vaciar carrito</a>
           </div>
         </li>
