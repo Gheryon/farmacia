@@ -45,7 +45,7 @@ if($_SESSION['us_tipo']==1||$_SESSION['us_tipo']==3){
             </div>
             <div class="form-group">
               <label for="precio">Precio</label>
-              <input id="precio" type="number" class="input form-control" value='1' placeholder="Introduce precio" required>
+              <input id="precio" type="number" step="any" class="input form-control" value='1' placeholder="Introduce precio" required>
             </div>
             <div class="form-group">
               <label for="laboratorio">Laboratorio</label>
