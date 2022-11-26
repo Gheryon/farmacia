@@ -272,7 +272,9 @@ $(document).ready(function(){
                 icon: 'error',
                 title: 'Oops...',
                 text: 'No hay productos en el carrito.'
-              })
+              }).then(function(){
+                location.href='../vista/adm_catalogo.php';
+              });
         }
         else if(nombre==''){
             Swal.fire({
@@ -285,8 +287,9 @@ $(document).ready(function(){
         }
         else{
             verificarStock().then(error=>{
-                console.log(error);
+                //console.log(error);
                 if(error==0){
+                    registrar_compra(nombre, dni);
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
@@ -294,6 +297,7 @@ $(document).ready(function(){
                         showConfirmButton: false,
                         timer: 1500
                       })
+                      vaciarLS();
                 }else{
                     Swal.fire({
                         icon: 'error',
@@ -303,6 +307,16 @@ $(document).ready(function(){
                 }
             });
         }
+    }
+
+    function registrar_compra(nombre, dni){
+        funcion='registrar_compra';
+        let total=$('#total').get(0).textContent;
+        let productos=recuperarLS();
+        let json=JSON.stringify(productos);
+        $.post('../controlador/compraController.php', {funcion, total, nombre, dni, json}, (response)=>{
+            console.log(response);
+        })
     }
 
     //devuelve 0 si se puede proceder con la compra, 1 si hay problemas
