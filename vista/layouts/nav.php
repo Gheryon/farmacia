@@ -1,3 +1,5 @@
+  <!-- css para la datatahles-->
+  <link rel="stylesheet" href="../css/datatables.css">
   <!-- css para la compra-->
   <link rel="stylesheet" href="../css/compra.css">
   <!-- css para el carrito-->
@@ -131,6 +133,15 @@
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Gestión usuarios
+              </p>
+            </a>
+          </li>
+          <li class="nav-header">Ventas</li>
+          <li class="nav-item">
+            <a href="adm_venta.php" class="nav-link">
+              <i class="nav-icon fas fa-notes-medical"></i>
+              <p>
+                Listar ventas
               </p>
             </a>
           </li>

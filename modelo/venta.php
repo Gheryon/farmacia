@@ -27,7 +27,14 @@ class Venta{
         $sql="DELETE FROM venta WHERE id_venta=:id_venta";
         $query=$this->acceso->prepare($sql);
         $query->execute(array(':id_venta'=>$id_venta));
-        
+    }
+
+    function buscar(){
+        $sql="SELECT id_venta, fecha, cliente, dni, total, CONCAT(usuario.nombre_us,' ',usuario.apellidos_us) as vendedor FROM venta JOIN usuario on vendedor=id_usuario";
+        $query=$this->acceso->prepare($sql);
+        $query->execute(array());
+        $this->objetos=$query->fetchAll();
+        return $this->objetos;
     }
 }
 ?>
