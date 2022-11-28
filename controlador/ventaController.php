@@ -12,3 +12,5 @@ if($_POST['funcion']=='listar'){
     $jsonString=JSON_encode($json);
     echo $jsonString;
 }
+
+?>
