@@ -1,8 +1,21 @@
 $(document).ready(function(){
+  mostrar_consultas();
+
   let funcion="listar";
-  $.post('../controlador/ventaController.php', {funcion}, (response)=>{
+  /*$.post('../controlador/ventaController.php', {funcion}, (response)=>{
     console.log(JSON.parse(response));
-  });
+  });*/
+
+  function mostrar_consultas(){
+    let funcion="mostrar_consultas";
+    $.post('../controlador/ventaController.php',  {funcion}, (response)=>{
+      const vistas = JSON.parse(response);
+      $('#venta_dia_vendedor').html(vistas.venta_dia_vendedor);
+      $('#venta_diaria').html(vistas.venta_diaria);
+      $('#venta_mensual').html(vistas.venta_mensual);
+      $('#venta_anual').html(vistas.venta_anual);
+    });
+  };
 
   //con datatables, el numero de columnas debe coincidir con el numero de columnas de la tabla, sino da error
   let datatable = $('#tabla-venta').DataTable({
