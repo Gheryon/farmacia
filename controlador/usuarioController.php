@@ -3,6 +3,8 @@ include_once '../modelo/usuario.php';
 $usuario=new Usuario();
 session_start();
 $id_usuario=$_SESSION['usuario'];
+$tipo_usuario=$_SESSION['us_tipo'];
+
 if($_POST['funcion']=='buscar_usuario'){
     $json=array();
     $fecha_actual=new DateTime();
@@ -148,5 +150,19 @@ if($_POST['funcion']=='borrar_usuario'){
     $pass=$_POST['pass'];
     $id_borrado=$_POST['id_usuario'];
     $usuario->borrarUsuario($pass, $id_borrado, $id_usuario);
+}
+
+if($_POST['funcion']=='mostrar_avatar'){
+    $usuario->mostrar_avatar_nav($id_usuario);
+    $json=array();
+    foreach ($usuario->objetos as $objeto) {
+        $json=$objeto;
+    }
+    $jsonstring=json_encode($json);
+    echo $jsonstring;
+}
+
+if($_POST['funcion']=='tipo_usuario'){
+    echo $tipo_usuario;
 }
 ?>

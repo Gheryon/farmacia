@@ -16,7 +16,7 @@ if(!empty($_SESSION['us_tipo'])){
             break;
         
         case 2:
-            header('location: ../vista/tec_catalogo.php');
+            header('location: ../vista/adm_catalogo.php');
             break;
 
         case 3:
@@ -37,7 +37,7 @@ if(!empty($_SESSION['us_tipo'])){
                 break;
             
             case 2:
-                header('location: ../vista/tec_catalogo.php');
+                header('location: ../vista/adm_catalogo.php');
                 break;
             
             case 3:

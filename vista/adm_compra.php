@@ -1,7 +1,7 @@
 <?php
 session_start();
 //si tipo==1, entonces es administrador, si tipo==3 es root, sino se vuelve a login
-if($_SESSION['us_tipo']==1||$_SESSION['us_tipo']==3){
+if($_SESSION['us_tipo']==1||$_SESSION['us_tipo']==2||$_SESSION['us_tipo']==3){
     include_once 'layouts/header.php';
     ?>
 

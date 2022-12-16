@@ -1,7 +1,7 @@
 <?php
 session_start();
 //solo se permite a esta seccion al usuario root --> 3, y al daministrador -->1 sino se vuelve a login
-if($_SESSION['us_tipo']==3||$_SESSION['us_tipo']==1){
+if($_SESSION['us_tipo']==1||$_SESSION['us_tipo']==2||$_SESSION['us_tipo']==3){
     include_once 'layouts/header.php';
     ?>
 

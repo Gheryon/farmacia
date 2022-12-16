@@ -5,8 +5,6 @@
     <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
   </footer>
 
-  <!-- Control Sidebar -->
-
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
@@ -24,4 +22,25 @@
 <!-- select2 -->
 <script src="../js/select2.js"></script>
 </body>
+<script>
+  let funcion='mostrar_avatar';
+  $.post('../controlador/usuarioController.php', {funcion}, (response)=>{
+    const avatar=JSON.parse(response);
+    $('#avatar-nav').attr('src','../img/'+avatar.avatar);
+  });
+
+  funcion='tipo_usuario';
+  $.post('../controlador/usuarioController.php', {funcion}, (response)=>{
+    if(response==1){//administrador
+      $('#gestion_lote').hide();
+    }
+    if(response==2){//tecnico
+      $('#gestion_lote').hide();
+      $('#gestion_usuario').hide();
+      $('#gestion_producto').hide();
+      $('#gestion_atributo').hide();
+      $('#gestion_proveedor').hide();
+    }
+  });
+</script>
 </html>

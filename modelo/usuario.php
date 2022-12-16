@@ -11,11 +11,26 @@ class Usuario{
 
     function login($dni, $pass){
         //usando :dni en lugar de $dni mas seguro, previene inyeccion codigo
-        $sql="SELECT * FROM usuario inner join tipo_us on us_tipo=id_tipo_us where dni_us=:dni and contrasena_us=:pass";
+        $sql="SELECT * FROM usuario inner join tipo_us on us_tipo=id_tipo_us where dni_us=:dni";
         $query=$this->acceso->prepare($sql);
-        $query->execute(array(':dni'=>$dni, ':pass'=>$pass));
+        $query->execute(array(':dni'=>$dni));
         $this->objetos=$query->fetchAll();
-        return $this->objetos;
+        foreach ($this->objetos as $objeto) {
+            $contrasena_actual=$objeto->contrasena_us;
+        }
+        //se comprueba si la contraseña de la base de datos está encriptada
+        //si está encriptada, tendrá '$2y$10$' en la posición 0, por eso el triple =
+        if(strpos($contrasena_actual, '$2y$10$')===0){
+            //se compara la contraseña de la base de datos con la introducida
+            if(password_verify($pass, $contrasena_actual)){
+                return $this->objetos;
+            }
+        }else {
+            //la contraseña no está encriptada
+            if($pass==$contrasena_actual){
+                return $this->objetos;
+            }
+        }
     }
 
     function obtener_datos($id){
@@ -34,27 +49,44 @@ class Usuario{
         
     }
 
-    function cambiar_contra($id_usuario, $oldpass, $newpass)
-    {
+    function cambiar_contra($id_usuario, $oldpass, $newpass){
         //primero se consulta si la contraseña actual es correcta
-        $sql="SELECT * FROM usuario WHERE id_usuario=:id and contrasena_us=:oldpass";
+        $sql="SELECT * FROM usuario WHERE id_usuario=:id";
         $query=$this->acceso->prepare($sql);
-        $query->execute(array(':id'=>$id_usuario, ':oldpass'=>$oldpass));
+        $query->execute(array(':id'=>$id_usuario));
         $this->objetos=$query->fetchAll();
-        //encontro al usuario con esos datos, por tanto se actualiza la contraseña
-        if(!empty($this->objetos)){
-            $sql="UPDATE usuario SET contrasena_us=:newpass WHERE id_usuario=:id";
-            $query=$this->acceso->prepare($sql);
-            $query->execute(array(':id'=>$id_usuario, ':newpass'=>$newpass));
-            echo 'update';
-        }else{
-            //no se encontro al usuario con esos datos, no se actualiza la contraseña
-            echo 'noupdate';
+        foreach ($this->objetos as $objeto) {
+            $contrasena_actual=$objeto->contrasena_us;
+        }
+        //se comprueba si la contraseña de la base de datos está encriptada
+        //si está encriptada, tendrá '$2y$10$' en la posición 0, por eso el triple =
+        if(strpos($contrasena_actual, '$2y$10$')===0){
+            //se compara la contraseña de la base de datos con la introducida
+            if(password_verify($oldpass, $contrasena_actual)){
+                //se encripta la nueva contraseña
+                $pass=password_hash($newpass, PASSWORD_BCRYPT, ['cost'=>10]);
+                $sql="UPDATE usuario SET contrasena_us=:newpass WHERE id_usuario=:id";
+                $query=$this->acceso->prepare($sql);
+                $query->execute(array(':id'=>$id_usuario, ':newpass'=>$pass));
+                echo 'update';
+            }else {
+                echo 'noupdate';
+            }
+        }else {
+            //la contraseña no está encriptada
+            if($oldpass==$contrasena_actual){
+                $pass=password_hash($newpass, PASSWORD_BCRYPT, ['cost'=>10]);
+                $sql="UPDATE usuario SET contrasena_us=:newpass WHERE id_usuario=:id";
+                $query=$this->acceso->prepare($sql);
+                $query->execute(array(':id'=>$id_usuario, ':newpass'=>$pass));
+                echo 'update';
+            }else {
+                echo 'noupdate';
+            }
         }
     }
 
-    function cambiar_avatar($id_usuario, $nombre)
-    {
+    function cambiar_avatar($id_usuario, $nombre){
         //primero se consulta si la contraseña actual es correcta
         $sql="SELECT avatar FROM usuario WHERE id_usuario=:id";
         $query=$this->acceso->prepare($sql);
@@ -147,20 +179,47 @@ class Usuario{
     }
     function borrarUsuario($pass, $id_borrado, $id_usuario){
         //se comprueba que el id_usuario es correcto
-        $sql="SELECT id_usuario FROM usuario WHERE id_usuario=:id_usuario AND contrasena_us=:pass";
+        $sql="SELECT * FROM usuario WHERE id_usuario=:id_usuario";
         $query=$this->acceso->prepare($sql);
-        $query->execute(array(':id_usuario'=>$id_usuario, ':pass'=>$pass));
+        $query->execute(array(':id_usuario'=>$id_usuario));
         $this->objetos=$query->fetchAll();
-        //el usuario es correcto
-        if(!empty($this->objetos)){ 
-            $sql="DELETE FROM usuario WHERE id_usuario=:id";
-            $query=$this->acceso->prepare($sql);
-            $query->execute(array(':id'=>$id_borrado));
-            echo 'borrado';
-        }else{
-            //el usuario no existe
-            echo 'noborrado';
+
+        foreach ($this->objetos as $objeto) {
+            $contrasena_actual=$objeto->contrasena_us;
         }
+        //se comprueba si la contraseña de la base de datos está encriptada
+        //si está encriptada, tendrá '$2y$10$' en la posición 0, por eso el triple =
+        if(strpos($contrasena_actual, '$2y$10$')===0){
+            //se compara la contraseña de la base de datos con la introducida
+            if(password_verify($pass, $contrasena_actual)){
+                $sql="DELETE FROM usuario WHERE id_usuario=:id";
+                $query=$this->acceso->prepare($sql);
+                $query->execute(array(':id'=>$id_borrado));
+                echo 'borrado';
+            }else{
+                //el usuario no existe
+                echo 'noborrado';
+            }
+        }else {
+            //la contraseña no está encriptada
+            if($pass==$contrasena_actual){
+                $sql="DELETE FROM usuario WHERE id_usuario=:id";
+                $query=$this->acceso->prepare($sql);
+                $query->execute(array(':id'=>$id_borrado));
+                echo 'borrado';
+            }else{
+                //el usuario no existe
+                echo 'noborrado';
+            }
+        }
+    }
+
+    function mostrar_avatar_nav($id_usuario){
+        $sql="SELECT avatar FROM usuario WHERE id_usuario=:id_usuario";
+        $query=$this->acceso->prepare($sql);
+        $query->execute(array(':id_usuario'=>$id_usuario));
+        $this->objetos=$query->fetchAll();
+        return $this->objetos;
     }
 }
 ?>
