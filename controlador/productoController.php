@@ -139,4 +139,37 @@ if($_POST['funcion']=='borrar'){
     $id=$_POST['id'];
     $producto->borrar($id);
 }
+
+if($_POST['funcion']=='traer_productos'){
+    $html="";
+    $productos=json_decode($_POST['productos']);
+    foreach ($productos as $product) {
+        $producto->buscar_id($product->id);
+        var_dump($producto);
+        foreach ($producto->objetos as $objeto) {
+            $subtotal=$objeto->precio*$product->cantidad;
+            $producto->obtenerStock($objeto->id_producto);
+            foreach ($producto->objetos as $obj) {
+                $stock=$obj->total;
+            }
+            $html.="<tr prodId='$objeto->id_producto' prodPrecio='$objeto->precio'>
+            <td>$objeto->nombre</td>
+            <td>$stock</td>
+            <td class='precio'>$objeto->precio</td>
+            <td>$objeto->concentracion}</td>
+            <td>$objeto->adicional</td>
+            <td>$objeto->laboratorio</td>
+            <td>$objeto->presentacion</td>
+            <td>
+                <input type='number' min='1' class='form-control cantidad_producto' value='$product->cantidad'>
+            </td>
+            <td class='subtotales'>
+                <h5>$subtotal</h5>
+            </td>
+            <td><button class='borrar-producto btn btn-danger'><i class='fas fa-times-circle'></i></button></td>
+        </tr>";
+        }
+    }
+    echo $html;
+}
 ?>

@@ -1,4 +1,8 @@
-  <!-- css para la datatahles-->
+  <!--para el pequeño icono en las pestañas-->
+  <link rel="icon" href="../img/logo.png" type="image/png">
+  <!-- css para animate de https://animate.style/-->
+  <link rel="stylesheet" href="../css/animate.min.css">
+  <!-- css para la datatables-->
   <link rel="stylesheet" href="../css/datatables.css">
   <!-- css para la compra-->
   <link rel="stylesheet" href="../css/compra.css">

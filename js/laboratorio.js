@@ -19,25 +19,21 @@ $(document).ready(function() {
                 $('#add-laboratorio').hide('slow');
                 $('#add-laboratorio').show(1000);
                 $('#add-laboratorio').hide(3000);
-                //resetea los campos de la card
-                $('#form-crear-laboratorio').trigger('reset');
                 buscar_lab();
             }
             if(response=='noadd'){
                 $('#noadd-laboratorio').hide('slow');
                 $('#noadd-laboratorio').show(1000);
                 $('#noadd-laboratorio').hide(3000);
-                //resetea los campos de la card
-                $('#form-crear-laboratorio').trigger('reset');
             }
             if(response=='edit'){
                 $('#edit-laboratorio').hide('slow');
                 $('#edit-laboratorio').show(1000);
                 $('#edit-laboratorio').hide(3000);
-                //resetea los campos de la card
-                $('#form-crear-laboratorio').trigger('reset');
                 buscar_lab();
             }
+            //resetea los campos de la card
+            $('#form-crear-laboratorio').trigger('reset');
             edit=false;
         })
         e.preventDefault();

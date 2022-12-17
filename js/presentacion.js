@@ -19,25 +19,21 @@ $(document).ready(function() {
                 $('#add-pre').hide('slow');
                 $('#add-pre').show(1000);
                 $('#add-pre').hide(3000);
-                //resetea los campos de la card
-                $('#form-crear-presentacion').trigger('reset');
                 buscar_pre();
             }
             if(response=='noadd'){
                 $('#noadd-pre').hide('slow');
                 $('#noadd-pre').show(1000);
                 $('#noadd-pre').hide(3000);
-                //resetea los campos de la card
-                $('#form-crear-presentacion').trigger('reset');
             }
             if(response=='edit'){
                 $('#edit-pre').hide('slow');
                 $('#edit-pre').show(1000);
                 $('#edit-pre').hide(3000);
-                //resetea los campos de la card
-                $('#form-crear-presentacion').trigger('reset');
                 buscar_pre();
             }
+            //resetea los campos de la card
+            $('#form-crear-presentacion').trigger('reset');
             edit=false;
         })
         e.preventDefault();

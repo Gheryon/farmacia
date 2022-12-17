@@ -130,38 +130,19 @@ $(document).ready(function(){
             });
         });
     }
-
-    function recuperar_carrito_LS_compra() {
-        let productos, id_producto;
+    
+    async function recuperar_carrito_LS_compra(){
+        let productos;
         productos=recuperarLS();
-        funcion="buscar_id";
-        productos.forEach(producto => {
-            id_producto=producto.id;
-            $.post('../controlador/productoController.php', {funcion, id_producto}, (response)=>{
-                let template_compra='';
-                let json=JSON.parse(response);
-                //solo se trae un objeto producto, no hace falta bucle
-                template_compra=`
-                <tr prodId="${producto.id}" prodPrecio="${json.precio}">
-                    <td>${json.nombre}</td>
-                    <td>${json.stock}</td>
-                    <td class="precio">${json.precio}</td>
-                    <td>${json.concentracion}</td>
-                    <td>${json.adicional}</td>
-                    <td>${json.laboratorio}</td>
-                    <td>${json.presentacion}</td>
-                    <td>
-                        <input type="number" min="1" class="form-control cantidad_producto" value="${producto.cantidad}">
-                    </td>
-                    <td class="subtotales">
-                        <h5>${json.precio*producto.cantidad}</h5>
-                    </td>
-                    <td><button class="borrar-producto btn btn-danger"><i class="fas fa-times-circle"></i></button></td>
-                </tr>
-                `;
-                $('#lista-compra').append(template_compra);
-            });
-        });
+        funcion="traer_productos";
+
+        const response=await fetch('../controlador/productoController.php', {
+            method:'POST',
+            headers:{'Content-Type':'application/x-www-form-urlencoded'},
+            body: 'funcion='+funcion+'&&productos='+JSON.stringify(productos)
+        })
+        let resultado=await response.text();
+        $('#lista-compra').append(resultado);
     }
 
     //modifica el valor del subtotal para que muestre en la tabla el valor correcto de cantidad*precio

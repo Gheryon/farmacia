@@ -36,7 +36,7 @@ if($_SESSION['us_tipo']==1||$_SESSION['us_tipo']==3||$_SESSION['us_tipo']==2){
               <h3 class="card-title">Lotes en riesgo</h3>
           </div>
           <div class="card-body p-0 table-responsive">
-            <table class="table table-hover text-nowrap">
+            <table class="animate__animated animate__fadeIn table table-hover text-nowrap">
               <thead class="table-success">
                 <tr>
                   <th>Código</th>

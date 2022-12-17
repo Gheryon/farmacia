@@ -5,9 +5,7 @@ $user = $_POST['user'];
 $pass = $_POST['pass'];
 
 $usuario = new Usuario();
-foreach ($usuario->objetos as $objeto) {
-    print_r($objeto);
-}
+
 if(!empty($_SESSION['us_tipo'])){
     //session_destroy();
     switch ($_SESSION['us_tipo']) {
@@ -24,8 +22,8 @@ if(!empty($_SESSION['us_tipo'])){
             break;
     }
 }else{
-    $usuario->login($user, $pass);
-    if(!empty($usuario->objetos)){
+    if(!empty($usuario->login($user, $pass)=="logueado")){
+        $usuario->obtener_datos_login($user);
         foreach ($usuario->objetos as $objeto) {
             $_SESSION['usuario']=$objeto->id_usuario;
             $_SESSION['us_tipo']=$objeto->us_tipo;

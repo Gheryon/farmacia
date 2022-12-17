@@ -10,7 +10,7 @@ if($_SESSION['us_tipo']==1||$_SESSION['us_tipo']==2||$_SESSION['us_tipo']==3){
 <?php include_once 'layouts/nav.php';?>
 
 <!-- Modal -->
-<div class="modal fade" id="cambio-contrasena" tabindex="-1" role="dialog" aria-labelledby="cambio-contrasena" aria-hidden="true">
+<div class="animate__animated animate__fadeIn modal fade" id="cambio-contrasena" tabindex="-1" role="dialog" aria-labelledby="cambio-contrasena" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

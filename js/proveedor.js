@@ -21,22 +21,20 @@ $(document).ready(function() {
                 $('#add-prov').hide('slow');
                 $('#add-prov').show(1000);
                 $('#add-prov').hide(3000);
-                $('#form-crear-proveedor').trigger('reset');
                 buscar_prov();
             }
             if(response=='edit'){
                 $('#edit-prov').hide('slow');
                 $('#edit-prov').show(1000);
                 $('#edit-prov').hide(3000);
-                $('#form-crear-proveedor').trigger('reset');
                 buscar_prov();
             }
             if(response=='noadd' || response=='noedit'){
                 $('#noadd-prov').hide('slow');
                 $('#noadd-prov').show(1000);
                 $('#noadd-prov').hide(3000);
-                $('#form-crear-proveedor').trigger('reset');
             }
+            $('#form-crear-proveedor').trigger('reset');
             edit=false;
         });
         e.preventDefault();

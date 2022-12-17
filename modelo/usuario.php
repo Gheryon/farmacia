@@ -14,8 +14,8 @@ class Usuario{
         $sql="SELECT * FROM usuario inner join tipo_us on us_tipo=id_tipo_us where dni_us=:dni";
         $query=$this->acceso->prepare($sql);
         $query->execute(array(':dni'=>$dni));
-        $this->objetos=$query->fetchAll();
-        foreach ($this->objetos as $objeto) {
+        $objetos=$query->fetchAll();
+        foreach ($objetos as $objeto) {
             $contrasena_actual=$objeto->contrasena_us;
         }
         //se comprueba si la contraseña de la base de datos está encriptada
@@ -23,14 +23,22 @@ class Usuario{
         if(strpos($contrasena_actual, '$2y$10$')===0){
             //se compara la contraseña de la base de datos con la introducida
             if(password_verify($pass, $contrasena_actual)){
-                return $this->objetos;
+                return "logueado";
             }
         }else {
             //la contraseña no está encriptada
             if($pass==$contrasena_actual){
-                return $this->objetos;
+                return "logueado";
             }
         }
+    }
+
+    function obtener_datos_login($dni){
+        $sql="SELECT * FROM usuario join tipo_us on us_tipo=id_tipo_us and dni_us=:dni";
+        $query=$this->acceso->prepare($sql);
+        $query->execute(array(':dni'=>$dni));
+        $this->objetos=$query->fetchAll();
+        return $this->objetos;
     }
 
     function obtener_datos($id){
@@ -100,8 +108,7 @@ class Usuario{
         return $this->objetos;
     }
 
-    function buscar()
-    {
+    function buscar(){
         //se ha introducido algún caracter a buscar, se devuelven los usuarios que encagen con la consulta
         if(!empty($_POST['consulta'])){
             $consulta=$_POST['consulta'];
@@ -120,8 +127,7 @@ class Usuario{
         }
     }
 
-    function crear($nombre, $apellidos, $edad, $dni, $pass, $tipo, $avatar)
-    {
+    function crear($nombre, $apellidos, $edad, $dni, $pass, $tipo, $avatar){
         //se busca si ya existe el usuario
         $sql="SELECT id_usuario FROM usuario WHERE dni_us=:dni";
         $query=$this->acceso->prepare($sql);
@@ -140,43 +146,78 @@ class Usuario{
 
     function ascender($pass, $id_ascendido, $id_usuario){
         //se comprueba que el id_usuario es correcto
-        $sql="SELECT id_usuario FROM usuario WHERE id_usuario=:id_usuario AND contrasena_us=:pass";
+        $sql="SELECT * FROM usuario WHERE id_usuario=:id_usuario";
         $query=$this->acceso->prepare($sql);
-        $query->execute(array(':id_usuario'=>$id_usuario, ':pass'=>$pass));
+        $query->execute(array(':id_usuario'=>$id_usuario));
         $this->objetos=$query->fetchAll();
-        //el usuario es correcto
-        if(!empty($this->objetos)){ 
-            $tipo=1;//1-->administrador
-            $sql="UPDATE usuario SET us_tipo=:tipo WHERE id_usuario=:id";
-            $query=$this->acceso->prepare($sql);
-            $query->execute(array(':id'=>$id_ascendido, ':tipo'=>$tipo));
-            
-            echo 'ascendido';
-        }else{
-            //el usuario no existe
-            echo 'noascendido';
+
+        foreach ($this->objetos as $objeto) {
+            $contrasena_actual=$objeto->contrasena_us;
+        }
+        //se comprueba si la contraseña de la base de datos está encriptada
+        //si está encriptada, tendrá '$2y$10$' en la posición 0, por eso el triple =
+        if(strpos($contrasena_actual, '$2y$10$')===0){
+            //se compara la contraseña de la base de datos con la introducida
+            if(password_verify($pass, $contrasena_actual)){
+                $tipo=1;//1-->administrador
+                $sql="UPDATE usuario SET us_tipo=:tipo WHERE id_usuario=:id";
+                $query=$this->acceso->prepare($sql);
+                $query->execute(array(':id'=>$id_ascendido, ':tipo'=>$tipo));
+                echo 'ascendido';
+            }else{
+                echo 'noascendido';
+            }
+        }else {
+            //la contraseña no está encriptada
+            if($pass==$contrasena_actual){
+                $tipo=1;//1-->administrador
+                $sql="UPDATE usuario SET us_tipo=:tipo WHERE id_usuario=:id";
+                $query=$this->acceso->prepare($sql);
+                $query->execute(array(':id'=>$id_ascendido, ':tipo'=>$tipo));
+                echo 'ascendido';
+            }else{
+                echo 'noascendido';
+            }
         }
     }
 
     function descender($pass, $id_descendido, $id_usuario){
         //se comprueba que el id_usuario es correcto
-        $sql="SELECT id_usuario FROM usuario WHERE id_usuario=:id_usuario AND contrasena_us=:pass";
+        $sql="SELECT * FROM usuario WHERE id_usuario=:id_usuario";
         $query=$this->acceso->prepare($sql);
-        $query->execute(array(':id_usuario'=>$id_usuario, ':pass'=>$pass));
+        $query->execute(array(':id_usuario'=>$id_usuario));
         $this->objetos=$query->fetchAll();
-        //el usuario es correcto
-        if(!empty($this->objetos)){ 
-            $tipo=2;//2-->tecnico
-            $sql="UPDATE usuario SET us_tipo=:tipo WHERE id_usuario=:id";
-            $query=$this->acceso->prepare($sql);
-            $query->execute(array(':id'=>$id_descendido, ':tipo'=>$tipo));
-            
-            echo 'descendido';
-        }else{
-            //el usuario no existe
-            echo 'nodescendido';
+
+        foreach ($this->objetos as $objeto) {
+            $contrasena_actual=$objeto->contrasena_us;
+        }
+        //se comprueba si la contraseña de la base de datos está encriptada
+        //si está encriptada, tendrá '$2y$10$' en la posición 0, por eso el triple =
+        if(strpos($contrasena_actual, '$2y$10$')===0){
+            //se compara la contraseña de la base de datos con la introducida
+            if(password_verify($pass, $contrasena_actual)){
+                $tipo=2;//2-->tecnico
+                $sql="UPDATE usuario SET us_tipo=:tipo WHERE id_usuario=:id";
+                $query=$this->acceso->prepare($sql);
+                $query->execute(array(':id'=>$id_descendido, ':tipo'=>$tipo));
+                echo 'descendido';
+            }else{
+                echo 'nodescendido';
+            }
+        }else {
+            //la contraseña no está encriptada
+            if($pass==$contrasena_actual){
+                $tipo=2;//2-->tecnico
+                $sql="UPDATE usuario SET us_tipo=:tipo WHERE id_usuario=:id";
+                $query=$this->acceso->prepare($sql);
+                $query->execute(array(':id'=>$id_descendido, ':tipo'=>$tipo));
+                echo 'descendido';
+            }else{
+                echo 'nodescendido';
+            }
         }
     }
+
     function borrarUsuario($pass, $id_borrado, $id_usuario){
         //se comprueba que el id_usuario es correcto
         $sql="SELECT * FROM usuario WHERE id_usuario=:id_usuario";
