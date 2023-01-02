@@ -49,8 +49,7 @@ class Usuario{
         return $this->objetos;
     }
 
-    function editar($id_usuario, $telefono, $residencia, $correo, $sexo, $adicional)
-    {
+    function editar($id_usuario, $telefono, $residencia, $correo, $sexo, $adicional){
         $sql="UPDATE usuario SET telefono_us=:telefono, residencia_us=:residencia, correo_us=:correo, sexo_us=:sexo, adicional_us=:adicional WHERE id_usuario=:id";
         $query=$this->acceso->prepare($sql);
         $query->execute(array(':id'=>$id_usuario, ':telefono'=>$telefono, ':residencia'=>$residencia, ':correo'=>$correo, ':sexo'=>$sexo, ':adicional'=>$adicional));
@@ -261,6 +260,30 @@ class Usuario{
         $query->execute(array(':id_usuario'=>$id_usuario));
         $this->objetos=$query->fetchAll();
         return $this->objetos;
+    }
+
+    function verificar($email, $dni){
+        $sql="SELECT * FROM usuario WHERE correo_us=:email AND dni_us=:dni";
+        $query=$this->acceso->prepare($sql);
+        $query->execute(array(':email'=>$email, ':dni'=>$dni));
+        $this->objetos=$query->fetchAll();
+        if(!empty($this->objetos)){
+            //query->rowCount cuenta el número de filas encontradas. Si se encontro 1, el usuario se verifica, si son 2 o más, error
+            if($query->rowCount()==1){
+                echo'encontrado';
+            }else{
+                echo 'no-encontrado';
+            }
+        }else{
+            echo 'no-encontrado';
+        }
+    }
+
+    function reemplazar($email, $dni, $codigo){
+        $sql="UPDATE usuario SET contrasena_us=:codigo WHERE correo_us=:email AND dni_us=:dni";
+        $query=$this->acceso->prepare($sql);
+        $query->execute(array(':codigo'=>$codigo, ':email'=>$email, ':dni'=>$dni));
+        //echo 'reemplazado';
     }
 }
 ?>
