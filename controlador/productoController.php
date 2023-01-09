@@ -1,5 +1,6 @@
 <?php
 include '../modelo/producto.php';
+require_once '../vendor/autoload.php';
 
 $producto=new Producto();
 
@@ -171,5 +172,57 @@ if($_POST['funcion']=='traer_productos'){
         }
     }
     echo $html;
+}
+
+if($_POST['funcion']=='reporte_productos'){
+    date_default_timezone_set('Europe/Madrid');
+    $fecha=date('d-m-Y');
+    $html="<header><h1>Reporte de productos</h1>
+    Fecha: ".$fecha."</header>
+    <table>
+        <thead>
+            <tr>
+                <th>n</th>
+                <th>Producto</th>
+                <th>Concentracion</th>
+                <th>Adicional</th>
+                <th>Laboratorio</th>
+                <th>Presentacion</th>
+                <th>Tipo</th>
+                <th>stock</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+    ";
+    $producto->reporte_productos();
+    $contador=0;
+    foreach ($producto->objetos as $objeto) {
+        $contador++;
+        $producto->obtenerStock($objeto->id_producto);
+        foreach ($producto->objetos as $obj) {
+            $stock=$obj->total;
+        }
+        $html.="
+        <tr>
+            <td>'$contador'</td>
+            <td>'$objeto->nombre'</td>
+            <td>'$objeto->concentracion'</td>
+            <td>'$objeto->adicional'</td>
+            <td>'$objeto->laboratorio'</td>
+            <td>'$objeto->presentacion'</td>
+            <td>'$objeto->tipo'</td>
+            <td>'$stock'</td>
+            <td>'$objeto->precio'</td>
+        </tr>";
+    }
+    $html.="
+        
+        </tbody>
+    </table>
+    ";
+    $mpdf = new \Mpdf\Mpdf();
+    $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+    $mpdf->Output("../pdf/pdf-".$_POST['funcion'].".pdf","F");
 }
 ?>

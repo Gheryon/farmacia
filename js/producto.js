@@ -324,4 +324,67 @@ $(document).ready(function() {
       })
       e.preventDefault();
     });
+
+    $(document).on('click', '#button-reporte-productos', (e)=>{
+      mostrar_loader('generar_reporte');
+      funcion='reporte_productos';
+      $.post('../controlador/productoController.php', {funcion}, (response)=>{
+        if(response==''){
+          cerrar_loader('exito_reporte');
+          window.open('../pdf/pdf-'+funcion+'.pdf',"_blank");
+        }else{
+          cerrar_loader('error_reporte');
+        }
+      })
+    });
+
+    function mostrar_loader(mensaje){
+      var texto=null;
+      var mostrar=false;
+      switch (mensaje) {
+        case 'generar_reporte':
+          texto='Generando reporte pdf, espere por favor...';
+          mostrar=true;
+          break;
+  
+      }
+      if(mostrar==true){
+        Swal.fire({
+          title: 'Generando reporte pdf.',
+          text: texto,
+          showConfirmButton: false
+        });
+      }
+    }
+  
+    function cerrar_loader(mensaje){
+      var tipo=null;
+      var texto=null;
+      var mostrar=false;
+      switch (mensaje) {
+        case 'exito_reporte':
+          tipo='success';
+          texto='Reporte pdf generado correctamente.';
+          mostrar=true;
+          break;
+  
+        case 'error_reporte':
+          tipo='error';
+          texto='No se pudo generar el reporte, vuelva a intentarlo.';
+          mostrar=true;
+          break;
+  
+        default:
+          Swal.close();
+          break;
+      }
+      if(mostrar==true){
+        Swal.fire({
+          position: 'center',
+          icon: tipo,
+          text: texto,
+          showConfirmButton: false
+        });
+      }
+    }
 });

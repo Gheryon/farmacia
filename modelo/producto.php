@@ -73,6 +73,7 @@ class Producto{
             return $this->objetos;
         }
     }
+
     function buscar_id($id)
     {
         $sql="SELECT id_producto, producto.nombre AS nombre, concentracion, adicional, precio, laboratorio.nombre AS laboratorio, tipo_producto.nombre AS tipo, presentacion.nombre AS presentacion, producto.avatar AS avatar, prod_lab, prod_tip_prod, prod_present
@@ -115,6 +116,18 @@ class Producto{
         $sql="SELECT SUM(stock) as total FROM lote WHERE lote_id_prod=:id";
         $query=$this->acceso->prepare($sql);
         $query->execute(array(':id'=>$id));
+        $this->objetos=$query->fetchAll();
+        return $this->objetos;
+    }
+
+    function reporte_productos(){
+        $sql="SELECT id_producto, producto.nombre AS nombre, concentracion, adicional, precio, laboratorio.nombre AS laboratorio, tipo_producto.nombre AS tipo, presentacion.nombre AS presentacion, producto.avatar AS avatar, prod_lab, prod_tip_prod, prod_present
+        FROM `producto` 
+        JOIN laboratorio ON prod_lab=id_laboratorio
+        JOIN tipo_producto ON prod_tip_prod=id_tip_prod
+        JOIN presentacion ON prod_present=id_presentacion AND producto.nombre NOT LIKE '' ORDER BY producto.nombre;";
+        $query=$this->acceso->prepare($sql);
+        $query->execute();
         $this->objetos=$query->fetchAll();
         return $this->objetos;
     }

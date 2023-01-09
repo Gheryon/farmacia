@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="../css/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../css/adminlte.min.css">
+    <!-- sweetalert2 -->
+  <link rel="stylesheet" href="../css/sweetalert2.css">
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -65,5 +67,7 @@
 <script src="../js/adminlte.min.js"></script>
 <!-- recuperar -->
 <script src="../js/recuperar.js"></script>
+<!-- swertalert2 -->
+<script src="../js/sweetalert2.js"></script>
 </body>
 </html>
