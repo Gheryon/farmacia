@@ -30,7 +30,7 @@ class VentaProducto{
     }
 
     function buscar($id){
-        $sql="SELECT precio, cantidad, producto.nombre as producto, concentracion, adicional, laboratorio.nombre as laboratorio, presentacion.nombre as presentacion, tipo_producto.nombre as tipo, subtotal FROM venta_producto JOIN producto on producto_id_producto=id_producto AND venta_id_venta=:id JOIN laboratorio on prod_lab=id_laboratorio JOIN tipo_producto on prod_tip_prod=id_tip_prod JOIN presentacion on prod_present=id_presentacion";
+        $sql="SELECT venta_producto.precio as precio, cantidad, producto.nombre as producto, concentracion, adicional, laboratorio.nombre as laboratorio, presentacion.nombre as presentacion, tipo_producto.nombre as tipo, subtotal FROM venta_producto JOIN producto on producto_id_producto=id_producto AND venta_id_venta=:id JOIN laboratorio on prod_lab=id_laboratorio JOIN tipo_producto on prod_tip_prod=id_tip_prod JOIN presentacion on prod_present=id_presentacion";
         $query=$this->acceso->prepare($sql);
         $query->execute(array(':id'=>$id));
         $this->objetos=$query->fetchAll();

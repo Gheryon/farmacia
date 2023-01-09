@@ -22,9 +22,11 @@ if($_POST['funcion']=='borrar'){
 }
 
 if($_POST['funcion']=='buscar-lote'){
-   $lote->buscar();
-   $json=array();
-   $fecha_actual = new DateTime();
+    $lote->buscar();
+    $json=array();
+    date_default_timezone_set('Europe/Madrid');
+    $fecha=date('Y-m-d H:i:s');
+    $fecha_actual = new DateTime($fecha);
     foreach ($lote->objetos as $objeto) {
         $vencimiento = new DateTime($objeto->vencimiento);
         $diferencia=$vencimiento->diff($fecha_actual);
