@@ -3,6 +3,8 @@ $(document).ready(function() {
   $('#aviso-error').hide();
 
   $('#form-recuperar').submit(e=>{
+    $('#aviso-exito').hide();
+    $('#aviso-error').hide();
     mostrar_loader('recuperar_password');
     let email=$('#email-recuperar').val();
     let dni=$('#dni-recuperar').val();

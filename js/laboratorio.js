@@ -14,7 +14,6 @@ $(document).ready(function() {
             funcion='editar';
         }
         $.post('../controlador/laboratorioController.php', {nombre_laboratorio, id_editado, funcion}, (response)=>{
-            //console.log(response);
             if(response=='add'){
                 $('#add-laboratorio').hide('slow');
                 $('#add-laboratorio').show(1000);

@@ -11,13 +11,24 @@ class Laboratorio{
 
     function crear($nombre, $avatar){
         //se busca si ya existe el laboratorio
-        $sql="SELECT id_laboratorio FROM laboratorio WHERE nombre=:nombre";
+        $sql="SELECT id_laboratorio,estado FROM laboratorio WHERE nombre=:nombre";
         $query=$this->acceso->prepare($sql);
         $query->execute(array(':nombre'=>$nombre));
         $this->objetos=$query->fetchAll();
         //si ya existe el nombre del laboratorio, no se añade
         if(!empty($this->objetos)){
-            echo 'noadd';
+            foreach ($this->objetos as $lab) {
+                $lab_id=$lab->id_laboratorio;
+                $lab_estado=$lab->estado;
+            }
+            if($lab_estado=='A'){
+                echo 'noadd';
+            }else{
+                $sql="UPDATE laboratorio SET estado='A' WHERE id_laboratorio=:id";
+                $query=$this->acceso->prepare($sql);
+                $query->execute(array(':id'=>$lab_id)); 
+                echo 'add';
+            }
         }else{
             $sql="INSERT INTO laboratorio(nombre, avatar) VALUES (:nombre, :avatar);";
             $query=$this->acceso->prepare($sql);
@@ -26,27 +37,26 @@ class Laboratorio{
         }
     }
 
-    function buscar()
-    {
+    function buscar(){
         //se ha introducido algún caracter a buscar, se devuelven los laboratorios que encagen con la consulta
         if(!empty($_POST['consulta'])){
             $consulta=$_POST['consulta'];
-            $sql="SELECT * FROM laboratorio WHERE nombre LIKE :consulta";
+            $sql="SELECT * FROM laboratorio WHERE estado='A' and nombre LIKE :consulta";
             $query=$this->acceso->prepare($sql);
             $query->execute(array(':consulta'=>"%$consulta%"));
             $this->objetos=$query->fetchAll();
             return $this->objetos;
         }else{
             //se devuelven todos los laboratorios; con el NOT LIKE '' se muestran todas las entradas que no son vacías, o sea, todos los registros que existan
-            $sql="SELECT * FROM laboratorio WHERE nombre NOT LIKE '' ORDER BY id_laboratorio LIMIT 25";
+            $sql="SELECT * FROM laboratorio WHERE estado='A' and nombre NOT LIKE '' ORDER BY id_laboratorio LIMIT 25";
             $query=$this->acceso->prepare($sql);
             $query->execute();
             $this->objetos=$query->fetchAll();
             return $this->objetos;
         }
     }
-    function cambiar_logo($id, $nombre)
-    {
+
+    function cambiar_logo($id, $nombre){
         //primero se consulta si la contraseña actual es correcta
         $sql="SELECT avatar FROM laboratorio WHERE id_laboratorio=:id";
         $query=$this->acceso->prepare($sql);
@@ -59,14 +69,23 @@ class Laboratorio{
         
         return $this->objetos;
     }
+    
     function borrar($id){
-        $sql="DELETE FROM laboratorio WHERE id_Laboratorio=:id";
+        $sql="SELECT * FROM producto WHERE prod_lab=:id";
         $query=$this->acceso->prepare($sql);
         $query->execute(array(':id'=>$id));
-        if(!empty($query->execute(array(':id'=>$id)))){
-            echo 'borrado';
-        }else{
+        $prod=$query->fetchAll();
+        if(!empty($prod)){
             echo 'noborrado';
+        }else{
+            $sql="UPDATE laboratorio SET estado='I' WHERE id_Laboratorio=:id";
+            $query=$this->acceso->prepare($sql);
+            $query->execute(array(':id'=>$id));
+            if(!empty($query->execute(array(':id'=>$id)))){
+                echo 'borrado';
+            }else{
+                echo 'noborrado';
+            }
         }
     }
 
