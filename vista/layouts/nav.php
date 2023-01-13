@@ -136,7 +136,15 @@
             <a href="adm_usuario.php" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
-                Gestión usuarios
+                Gestión usuario
+              </p>
+            </a>
+          </li>
+          <li id="gestion_cliente" class="nav-item">
+            <a href="adm_cliente.php" class="nav-link">
+              <i class="nav-icon fas fa-user-friends"></i>
+              <p>
+                Gestión cliente
               </p>
             </a>
           </li>

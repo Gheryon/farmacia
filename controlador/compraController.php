@@ -1,6 +1,5 @@
 <?php
 include_once '../modelo/venta.php';
-//conexion.php para usar pdo y transacciones
 include_once '../modelo/conexion.php';
 
 $venta = new Venta();
@@ -9,12 +8,11 @@ $vendedor=$_SESSION['usuario'];
 
 if($_POST['funcion']=='registrar_compra'){
     $total=$_POST['total'];
-    $nombre=$_POST['nombre'];
-    $dni=$_POST['dni'];
+    $cliente=$_POST['cliente'];
     $productos=json_decode($_POST['json']);
     date_default_timezone_set('Europe/Madrid');
     $fecha=date('Y-m-d H:i:s');
-    $venta->crear($nombre, $dni, $total, $fecha, $vendedor);
+    $venta->crear($cliente, $total, $fecha, $vendedor);
     $venta->ultima_venta();
     foreach ($venta->objetos as $objeto) {
         $id_venta=$objeto->ultima_venta;

@@ -1,4 +1,6 @@
 $(document).ready(function(){
+    $('.select2').select2();
+    rellenar_clientes();
     contar_productos();
     recuperar_carrito_LS();
     recuperar_carrito_LS_compra();
@@ -244,9 +246,7 @@ $(document).ready(function(){
     }
 
     function procesar_compra(){
-        let nombre, dni;
-        nombre=$('#cliente').val();
-        dni=$('#dni').val();
+        let cliente =$('#cliente').val();
         //si length==0, no hay productos en el carrito, no se puede seguir
         if(recuperarLS().length==0){
             Swal.fire({
@@ -257,11 +257,11 @@ $(document).ready(function(){
                 location.href='../vista/adm_catalogo.php';
               });
         }
-        else if(nombre==''){
+        else if(cliente==''){
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Se necesita un nombre de cliente.'
+                text: 'Se necesita un cliente.'
               }).then(function(){
                 location.href='../vista/adm_catalogo.php';
               });
@@ -270,7 +270,7 @@ $(document).ready(function(){
             verificarStock().then(error=>{
                 //console.log(error);
                 if(error==0){
-                    registrar_compra(nombre, dni);
+                    registrar_compra(cliente);
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
@@ -290,12 +290,12 @@ $(document).ready(function(){
         }
     }
 
-    function registrar_compra(nombre, dni){
+    function registrar_compra(cliente){
         funcion='registrar_compra';
         let total=$('#total').get(0).textContent;
         let productos=recuperarLS();
         let json=JSON.stringify(productos);
-        $.post('../controlador/compraController.php', {funcion, total, nombre, dni, json}, (response)=>{
+        $.post('../controlador/compraController.php', {funcion, total, cliente, json}, (response)=>{
             console.log(response);
         })
     }
@@ -312,5 +312,19 @@ $(document).ready(function(){
         })
         let error=await response.text();
         return error;
+    }
+
+    function rellenar_clientes(){
+        funcion='rellenar_clientes';
+        $.post('../controlador/clienteController.php', {funcion}, (response)=>{
+            let clientes=JSON.parse(response);
+            let template='';
+            clientes.forEach(cliente=>{
+                template+=`
+                <option value="${cliente.id}">${cliente.nombre}</option>
+                `;
+            });
+            $('#cliente').html(template);
+        })
     }
 })

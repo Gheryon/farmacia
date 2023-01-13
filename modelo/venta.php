@@ -1,5 +1,5 @@
 <?php
-include 'conexion.php';
+include_once 'conexion.php';
 
 class Venta{
     var $objetos;
@@ -9,10 +9,10 @@ class Venta{
         $this->acceso = $db->pdo;
     }
 
-    function crear($nombre, $dni, $total, $fecha, $vendedor){
-        $sql="INSERT INTO venta(fecha,cliente,dni,total,vendedor) VALUES (:fecha, :cliente, :dni, :total, :vendedor)";
+    function crear($cliente, $total, $fecha, $vendedor){
+        $sql="INSERT INTO venta(fecha,total,vendedor,id_cliente) VALUES (:fecha, :total, :vendedor, :cliente)";
         $query=$this->acceso->prepare($sql);
-        $query->execute(array(':fecha'=>$fecha, ':cliente'=>$nombre, ':dni'=>$dni, ':total'=>$total, ':vendedor'=>$vendedor));
+        $query->execute(array(':fecha'=>$fecha, ':total'=>$total, ':vendedor'=>$vendedor, ':cliente'=>$cliente));
     }
 
     function ultima_venta(){
@@ -30,7 +30,7 @@ class Venta{
     }
 
     function buscar(){
-        $sql="SELECT id_venta, fecha, cliente, dni, total, CONCAT(usuario.nombre_us,' ',usuario.apellidos_us) as vendedor FROM venta JOIN usuario on vendedor=id_usuario";
+        $sql="SELECT id_venta, fecha, cliente, dni, total, CONCAT(usuario.nombre_us,' ',usuario.apellidos_us) as vendedor,id_cliente FROM venta JOIN usuario on vendedor=id_usuario";
         $query=$this->acceso->prepare($sql);
         $query->execute(array());
         $this->objetos=$query->fetchAll();
