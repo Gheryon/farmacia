@@ -225,4 +225,16 @@ if($_POST['funcion']=='reporte_productos'){
     $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
     $mpdf->Output("../pdf/pdf-".$_POST['funcion'].".pdf","F");
 }
+
+if($_POST['funcion']=='rellenar_productos'){
+    $producto->rellenar_productos();
+    $json=array();
+    foreach ($producto->objetos as $objeto) {
+      $json[]=array(
+        'nombre'=>$objeto->id_producto.' | '.$objeto->nombre.' | '.$objeto->concentracion.' | '.$objeto->adicional.' | '.$objeto->laboratorio.' | '.$objeto->presentacion
+      );
+    }
+    $jsonstring=json_encode($json);
+    echo $jsonstring;
+  }
 ?>

@@ -142,5 +142,18 @@ class Producto{
         $this->objetos=$query->fetchAll();
         return $this->objetos;
     }
+
+    function rellenar_productos(){
+        $sql="SELECT id_producto, producto.nombre AS nombre, concentracion, adicional, precio, laboratorio.nombre AS laboratorio, tipo_producto.nombre AS tipo, presentacion.nombre AS presentacion
+        FROM `producto` 
+        JOIN laboratorio ON prod_lab=id_laboratorio
+        JOIN tipo_producto ON prod_tip_prod=id_tip_prod
+        JOIN presentacion ON prod_present=id_presentacion ORDER BY producto.nombre;";
+        $query=$this->acceso->prepare($sql);
+        $query->execute();
+        $this->objetos=$query->fetchAll();
+        return $this->objetos;
+      }
+    
 }
 ?>
