@@ -67,4 +67,28 @@ if($_POST['funcion']=='buscar-lote'){
     echo $jsonstring;
 }
 
+///////////////actualización//////////////////////
+if($_POST['funcion']=='ver_compra'){
+	$id=$_POST['id'];
+	$lote->ver($id);
+	$contador=0;
+	$json=array();
+  foreach ($lote->objetos as $objeto) {
+    $contador++;
+    $json[]=array(
+      'numero'=>$contador,
+      'codigo'=>$objeto->codigo,
+      'cantidad'=>$objeto->cantidad,
+      'vencimiento'=>$objeto->vencimiento,
+      'precio_compra'=>$objeto->precio_compra,
+      'producto'=>$objeto->producto.' | '.$objeto->concentracion.' | '.$objeto->adicional,
+      'laboratorio'=>$objeto->laboratorio,
+      'presentacion'=>$objeto->presentacion,
+      'tipo'=>$objeto->tipo
+    );
+  }
+  $jsonstring=json_encode($json);
+  echo $jsonstring;
+}
+
 ?>

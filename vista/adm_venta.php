@@ -213,5 +213,4 @@ else{
     header('Location: ../index.php');
 }
 ?>
-<script src="../js/datatables.js"></script>
 <script src="../js/venta.js"></script>

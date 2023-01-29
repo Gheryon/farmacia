@@ -10,30 +10,92 @@ if($_SESSION['us_tipo']==3){
 <?php include_once 'layouts/nav.php';?>
 
 <!-- Modal -->
-<div class="modal fade" id="editar-lote" tabindex="-1" role="dialog" aria-labelledby="cambio-contrasena" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="vistaCompra" tabindex="-1" role="dialog" aria-labelledby="vistaCompra" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="card card-success">
         <div class="card-header">
-          <h3 class="card-title">Editar lote</h3>
+          <h3 class="card-title">Detalle de compra</h3>
           <button data-dismiss="modal" aria-label="close" class="close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="card-body">
-          <div class="alert alert-success text-center" id='edit-lote' style='display:none'>
-              <span><i class="fas fa-check m-1"></i>Lote editado</span>
+          <div class="form-group">
+            <label for="codigo_compra">Código compra: </label>
+            <span id="codigo_compra"></span>
           </div>
-          <form id="form-editar-lote">
-            <div class="form-group">
-              <label for="cogigo_lote">Código lote: </label>
-              <label id="codigo_lote">Código lote</label>
+          <div class="form-group">
+            <label for="fecha_compra">Fecha de compra: </label>
+            <span id="fecha_compra"></span>
+          </div>
+          <div class="form-group">
+            <label for="fecha_entrega">Fecha de entrega: </label>
+            <span id="fecha_entrega"></span>
+          </div>
+          <div class="form-group">
+            <label for="estado_compra_vista">Estado: </label>
+            <span id="estado_compra_vista"></span>
+          </div>
+          <div class="form-group">
+            <label for="proveedor">Proveedor: </label>
+            <span id="proveedor"></span>
+          </div>
+          <table class="table table-hover text-nowrap table-responsive">
+            <thead class="table-success">
+              <tr>
+                <th>0</th>
+                <th>Código</th>
+                <th>Cantidad</th>
+                <th>Vencimiento</th>
+                <th>Precio</th>
+                <th>Producto</th>
+                <th>Laboratorio</th>
+                <th>Presentación</th>
+                <th>Tipo</th>
+              </tr>
+            </thead>
+            <tbody class="table-warning" id="detalles">
+
+            </tbody>
+          </table>
+            <div class="float-right input-group-append">
+              <h3 class="m-3">Total:</h3>
+              <h3 class="m-3" id="total"></h3>
             </div>
+        </div>
+        <div class="card-footer">
+          <button type="button" data-dismiss="modal" class="btn btn-outline-secondary float-right m-1">Cerrar</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="cambiarEstado" tabindex="-1" role="dialog" aria-labelledby="cambiar-estado" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="card card-success">
+        <div class="card-header">
+          <h3 class="card-title">Cambiar estado</h3>
+          <button data-dismiss="modal" aria-label="close" class="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-danger text-center" id='noedit' style='display:none'>
+              <span><i class="fas fa-times m-1"></i>No se pudo editar</span>
+          </div>
+          <div class="alert alert-success text-center" id='edit' style='display:none'>
+              <span><i class="fas fa-check m-1"></i>Estado cambiado</span>
+          </div>
+          <form id="form-editar">
             <div class="form-group">
-              <label for="stock">Stock</label>
-              <input id="stock" type="number" class="input form-control" placeholder="Introduce stock" required>
+              <label for="estado_compra">Estado</label>
+              <select name="estado_compra" id="estado_compra" class="form-control select2" style="width: 100%"></select>
+              <input type="hidden" id="id_compra">
             </div>
-            <input type="hidden" id="id_lote_prod">
         </div>
         <div class="card-footer">
           <button type="submit" class="btn bg-gradient-primary float-right m-1">Guardar</button>
@@ -80,11 +142,23 @@ if($_SESSION['us_tipo']==3){
                     </div>
                 </div>
                 <div class="card-body">
-                  <div class="row">
-                    <div id="lotes" class="row d-flex align-items-stretch">
+                  <table id="compras" class="table table-dark table-hover">
+                    <thead>
+                      <tr>
+                        <th>0</th>
+                        <th>ID | Código</th>
+                        <th>Fecha de compra</th>
+                        <th>Fecha de entrega</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Proveedor</th>
+                        <th>Opciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
 
-                    </div>
-                  </div>
+                    </tbody>
+                  </table>
                 </div>
                 <div class="card-footer">
 
@@ -102,4 +176,4 @@ else{
     header('Location: ../index.php');
 }
 ?>
-<script src="../js/lote.js"></script>
+<script src="../js/compras.js"></script>

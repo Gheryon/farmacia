@@ -185,14 +185,36 @@ $(document).ready(function(){
                     text: 'No hay productos seleccionados'
                   });
                 }else{
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Compra realizada',
-                    showConfirmButton: false,
-                    timer: 1500
-                  }).then(function(){
-                    location.href='../vista/adm_compras.php';
+                  let descripcion={
+                    codigo: codigo,
+                    fecha_compra: fecha_compra,
+                    fecha_entrega: fecha_entrega,
+                    total: total,
+                    estado: estado,
+                    proveedor: proveedor
+                  };
+                  funcion='registrar_compra';
+                  let productosString=JSON.stringify(prods);
+                  let descripcionString=JSON.stringify(descripcion);
+                  $.post('../controlador/comprasController.php', {funcion, productosString, descripcionString}, (response)=>{
+                    console.log(response);
+                    if(response=='add'){
+                      Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Compra realizada',
+                        showConfirmButton: false,
+                        timer: 1500
+                      }).then(function(){
+                        location.href='../vista/adm_compras.php';
+                      });
+                    }else{
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Error en el servidor'
+                      });
+                    }
                   });
                 }
               }
