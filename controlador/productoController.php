@@ -29,62 +29,62 @@ if($_POST['funcion']=='editar'){
 }
 
 if($_POST['funcion']=='buscar'){
-    $producto->buscar();
-    $json=array();
-    foreach ($producto->objetos as $objeto) {
-        //obtenerStock devuelve el total de solo 1 producto, hay que recorrer el de todos
-        $producto->obtenerStock($objeto->id_producto);
-        foreach ($producto->objetos as $obj) {
-            $total = $obj->total;
-        }
-        $json[]=array(
-            'id'=>$objeto->id_producto,
-            'nombre'=>$objeto->nombre,
-            'concentracion'=>$objeto->concentracion,
-            'adicional'=>$objeto->adicional,
-            'precio'=>$objeto->precio,
-            'stock'=>$total,
-            'laboratorio'=>$objeto->laboratorio,
-            'tipo'=>$objeto->tipo,
-            'presentacion'=>$objeto->presentacion,
-            'laboratorio_id'=>$objeto->prod_lab,
-            'tipo_id'=>$objeto->prod_tip_prod,
-            'presentacion_id'=>$objeto->prod_present,
-            'avatar'=>'../img/prod/'.$objeto->avatar
-        );
-    }
-    $jsonstring=json_encode($json);
-    echo $jsonstring;
+	$producto->buscar();
+	$json=array();
+	foreach ($producto->objetos as $objeto) {
+		//obtenerStock devuelve el total de solo 1 producto, hay que recorrer el de todos
+		$producto->obtenerStock($objeto->id_producto);
+		foreach ($producto->objetos as $obj) {
+			$total = $obj->total;
+		}
+		$json[]=array(
+			'id'=>$objeto->id_producto,
+			'nombre'=>$objeto->nombre,
+			'concentracion'=>$objeto->concentracion,
+			'adicional'=>$objeto->adicional,
+			'precio'=>$objeto->precio,
+			'stock'=>$total,
+			'laboratorio'=>$objeto->laboratorio,
+			'tipo'=>$objeto->tipo,
+			'presentacion'=>$objeto->presentacion,
+			'laboratorio_id'=>$objeto->prod_lab,
+			'tipo_id'=>$objeto->prod_tip_prod,
+			'presentacion_id'=>$objeto->prod_present,
+			'avatar'=>'../img/prod/'.$objeto->avatar
+		);
+	}
+	$jsonstring=json_encode($json);
+	echo $jsonstring;
 }
 
 if($_POST['funcion']=='buscar_id'){
-    $id=$_POST['id_producto'];
-    $producto->buscar_id($id);
-    $json=array();
-    foreach ($producto->objetos as $objeto) {
-        //obtenerStock devuelve el total de solo 1 producto, hay que recorrer el de todos
-        $producto->obtenerStock($objeto->id_producto);
-        foreach ($producto->objetos as $obj) {
-            $total = $obj->total;
-        }
-        $json[]=array(
-            'id'=>$objeto->id_producto,
-            'nombre'=>$objeto->nombre,
-            'concentracion'=>$objeto->concentracion,
-            'adicional'=>$objeto->adicional,
-            'precio'=>$objeto->precio,
-            'stock'=>$total,
-            'laboratorio'=>$objeto->laboratorio,
-            'tipo'=>$objeto->tipo,
-            'presentacion'=>$objeto->presentacion,
-            'laboratorio_id'=>$objeto->prod_lab,
-            'tipo_id'=>$objeto->prod_tip_prod,
-            'presentacion_id'=>$objeto->prod_present,
-            'avatar'=>'../img/prod/'.$objeto->avatar
-        );
-    }
-    $jsonstring=json_encode($json[0]);
-    echo $jsonstring;
+	$id=$_POST['id_producto'];
+	$producto->buscar_id($id);
+	$json=array();
+	foreach ($producto->objetos as $objeto) {
+		//obtenerStock devuelve el total de solo 1 producto, hay que recorrer el de todos
+		$producto->obtenerStock($objeto->id_producto);
+		foreach ($producto->objetos as $obj) {
+			$total = $obj->total;
+		}
+		$json[]=array(
+			'id'=>$objeto->id_producto,
+			'nombre'=>$objeto->nombre,
+			'concentracion'=>$objeto->concentracion,
+			'adicional'=>$objeto->adicional,
+			'precio'=>$objeto->precio,
+			'stock'=>$total,
+			'laboratorio'=>$objeto->laboratorio,
+			'tipo'=>$objeto->tipo,
+			'presentacion'=>$objeto->presentacion,
+			'laboratorio_id'=>$objeto->prod_lab,
+			'tipo_id'=>$objeto->prod_tip_prod,
+			'presentacion_id'=>$objeto->prod_present,
+			'avatar'=>'../img/prod/'.$objeto->avatar
+		);
+	}
+	$jsonstring=json_encode($json[0]);
+	echo $jsonstring;
 }
 
 if($_POST['funcion']=='verificar_stock'){

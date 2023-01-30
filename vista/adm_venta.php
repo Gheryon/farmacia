@@ -162,6 +162,21 @@ if($_SESSION['us_tipo']==1||$_SESSION['us_tipo']==2||$_SESSION['us_tipo']==3){
                 </div>
               </div>
               <!-- ./col -->
+              <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-primary">
+                  <div class="inner">
+                    <h3 id="ganancia_mensual">0</h3>
+
+                    <p>Ganancia mensual</p>
+                  </div>
+                  <div class="icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                  </div>
+                  <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+              <!-- ./col -->
             </div>
         
           </div>

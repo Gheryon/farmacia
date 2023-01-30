@@ -10,11 +10,12 @@ $(document).ready(function(){
     let funcion="mostrar_consultas";
     $.post('../controlador/ventaController.php',  {funcion}, (response)=>{
       const vistas = JSON.parse(response);
-      //al multiplicar por 1, se convierte de cadena a número, para si usar toFixed()
+      //al multiplicar por 1, se convierte de cadena a número, para asi usar toFixed()
       $('#venta_dia_vendedor').html((vistas.venta_dia_vendedor*1).toFixed(2));
       $('#venta_diaria').html((vistas.venta_diaria*1).toFixed(2));
       $('#venta_mensual').html((vistas.venta_mensual*1).toFixed(2));
       $('#venta_anual').html((vistas.venta_anual*1).toFixed(2));
+      $('#ganancia_mensual').html((vistas.ganancia_mensual*1).toFixed(2));
     });
   };
 
@@ -39,39 +40,39 @@ $(document).ready(function(){
     "language": espannol
     });
 
-    $('#tabla-venta tbody').on('click', '.ver', function(){
-      let datos = datatable.row($(this).parents()).data();
-      let id = datos.id_venta;
-      funcion="ver_venta";
-      $('#codigo_venta').html(datos.id_venta);
-      $('#fecha_venta').html(datos.fecha);
-      $('#cliente_venta').html(datos.cliente);
-      $('#dni_cliente_venta').html(datos.dni);
-      $('#vendedor_venta').html(datos.vendedor);
-      $('#total_venta').html(datos.total);
-      $.post('../controlador/ventaProductoController.php', {id, funcion}, (response)=>{
-        let registros = JSON.parse(response);
-        let template="";
-        //para asegurar que #registros esté vacío
+  $('#tabla-venta tbody').on('click', '.ver', function(){
+    let datos = datatable.row($(this).parents()).data();
+    let id = datos.id_venta;
+    funcion="ver_venta";
+    $('#codigo_venta').html(datos.id_venta);
+    $('#fecha_venta').html(datos.fecha);
+    $('#cliente_venta').html(datos.cliente);
+    $('#dni_cliente_venta').html(datos.dni);
+    $('#vendedor_venta').html(datos.vendedor);
+    $('#total_venta').html(datos.total);
+    $.post('../controlador/ventaProductoController.php', {id, funcion}, (response)=>{
+      let registros = JSON.parse(response);
+      let template="";
+      //para asegurar que #registros esté vacío
+      $('#registros').html(template);
+      registros.forEach(registro => {
+        template+=`
+        <tr>
+          <td>${registro.cantidad}</td>
+          <td>${registro.precio}</td>
+          <td>${registro.producto}</td>
+          <td>${registro.concentracion}</td>
+          <td>${registro.adicional}</td>
+          <td>${registro.laboratorio}</td>
+          <td>${registro.presentacion}</td>
+          <td>${registro.tipo}</td>
+          <td>${registro.subtotal}</td>
+        </tr>
+        `;
         $('#registros').html(template);
-        registros.forEach(registro => {
-          template+=`
-          <tr>
-            <td>${registro.cantidad}</td>
-            <td>${registro.precio}</td>
-            <td>${registro.producto}</td>
-            <td>${registro.concentracion}</td>
-            <td>${registro.adicional}</td>
-            <td>${registro.laboratorio}</td>
-            <td>${registro.presentacion}</td>
-            <td>${registro.tipo}</td>
-            <td>${registro.subtotal}</td>
-          </tr>
-          `;
-          $('#registros').html(template);
-        });
-      })
-    });
+      });
+    })
+  });
 });
 
 //debe de estar fuera del jquery para funcionar

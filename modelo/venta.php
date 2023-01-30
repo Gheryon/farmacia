@@ -61,21 +61,32 @@ class Venta{
         return $this->objetos;
     }
 
-    //se necesita especificar que el año y el mes sean el actual, sino traerá todos los meses de todos los años
-    function venta_mensual(){
-        $sql="SELECT SUM(total) as venta_mensual FROM `venta` WHERE year(fecha)=year(curdate()) and month(fecha)=month(curdate()); ";
-        $query=$this->acceso->prepare($sql);
-        $query->execute(array());
-        $this->objetos=$query->fetchAll();
-        return $this->objetos;
-    }
+	//se necesita especificar que el año y el mes sean el actual, sino traerá todos los meses de todos los años
+	function venta_mensual(){
+		$sql="SELECT SUM(total) as venta_mensual FROM `venta` WHERE year(fecha)=year(curdate()) and month(fecha)=month(curdate()); ";
+		$query=$this->acceso->prepare($sql);
+		$query->execute(array());
+		$this->objetos=$query->fetchAll();
+		return $this->objetos;
+	}
 
-    function venta_anual(){
-        $sql="SELECT SUM(total) as venta_anual FROM `venta` WHERE year(fecha)=year(curdate()); ";
-        $query=$this->acceso->prepare($sql);
-        $query->execute(array());
-        $this->objetos=$query->fetchAll();
-        return $this->objetos;
-    }
+	function venta_anual(){
+		$sql="SELECT SUM(total) as venta_anual FROM `venta` WHERE year(fecha)=year(curdate()); ";
+		$query=$this->acceso->prepare($sql);
+		$query->execute(array());
+		$this->objetos=$query->fetchAll();
+		return $this->objetos;
+	}
+
+	function ganancia_mensual(){
+		$sql="SELECT SUM(det_cantidad*precio_compra) as ganancia_mensual FROM detalle_venta
+		JOIN venta on id_det_venta=id_venta
+		AND year(fecha)=year(curdate()) AND month(fecha)=month(curdate())
+		JOIN lote on id__det_lote=lote.id;";
+		$query=$this->acceso->prepare($sql);
+		$query->execute(array());
+		$this->objetos=$query->fetchAll();
+		return $this->objetos;
+	}
 }
 ?>

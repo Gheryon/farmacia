@@ -110,57 +110,55 @@ $(document).ready(function() {
   });
 
   function buscar_producto(consulta) {
-      funcion="buscar";
-      $.post('../controlador/productoController.php', {funcion, consulta}, (response)=>{
-          const productos=JSON.parse(response);
-          let template='';
-          productos.forEach(producto => {
-              template+=`
-              <div prodId="${producto.id}" prodNombre="${producto.nombre}" prodPrecio="${producto.precio}" prodConcentracion="${producto.concentracion}" prodAdicional="${producto.adicional}" prodLaboratorio="${producto.laboratorio_id}" prodTipo="${producto.tipo_id}" prodPresentacion="${producto.presentacion_id}" prodAvatar="${producto.avatar}" class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
-            <div class="card bg-light d-flex flex-fill">
-              <div class="card-header text-muted border-bottom-0">
-              <i class="fas fa-lg fa-cubes mr-1"></i>${producto.stock}
+    funcion="buscar";
+    $.post('../controlador/productoController.php', {funcion, consulta}, (response)=>{
+      console.log(response);
+        const productos=JSON.parse(response);
+        let template='';
+        productos.forEach(producto => {
+          template+=`
+          <div prodId="${producto.id}" prodNombre="${producto.nombre}" prodPrecio="${producto.precio}" prodConcentracion="${producto.concentracion}" prodAdicional="${producto.adicional}" prodLaboratorio="${producto.laboratorio_id}" prodTipo="${producto.tipo_id}" prodPresentacion="${producto.presentacion_id}" prodAvatar="${producto.avatar}" class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+        <div class="card bg-light d-flex flex-fill">
+          <div class="card-header text-muted border-bottom-0">
+          <i class="fas fa-lg fa-cubes mr-1"></i>${producto.stock}
+          </div>
+          <div class="card-body pt-0">
+            <div class="row">
+              <div class="col-7">
+                <h2 class="lead"><b>${producto.nombre}</b></h2>
+                <h4 class="lead"><b><i class="fas fa-lg fa-dollar-sign mr-1"></i>${producto.precio}</b></h4>
+                <ul class="ml-4 mb-0 fa-ul text-muted">
+                  <li class="small"><span class="fa-li"><i class="fas fa-lg fa-mortar-pestle"></i></span> Concentración: ${producto.concentracion}</li>
+                  <li class="small"><span class="fa-li"><i class="fas fa-lg fa-prescription-bottle-alt"></i></span> Adicional: ${producto.adicional}</li>
+                  <li class="small"><span class="fa-li"><i class="fas fa-lg fa-flask"></i></span> Laboratorio: ${producto.laboratorio}</li>
+                  <li class="small"><span class="fa-li"><i class="fas fa-lg fa-copyright"></i></span> Tipo: ${producto.tipo}</li>
+                  <li class="small"><span class="fa-li"><i class="fas fa-lg fa-pills"></i></span> Presentación: ${producto.presentacion}</li>
+                </ul>
               </div>
-              <div class="card-body pt-0">
-                <div class="row">
-                  <div class="col-7">
-                    <h2 class="lead"><b>${producto.nombre}</b></h2>
-                    <h4 class="lead"><b><i class="fas fa-lg fa-dollar-sign mr-1"></i>${producto.precio}</b></h4>
-                    <ul class="ml-4 mb-0 fa-ul text-muted">
-                      <li class="small"><span class="fa-li"><i class="fas fa-lg fa-mortar-pestle"></i></span> Concentración: ${producto.concentracion}</li>
-                      <li class="small"><span class="fa-li"><i class="fas fa-lg fa-prescription-bottle-alt"></i></span> Adicional: ${producto.adicional}</li>
-                      <li class="small"><span class="fa-li"><i class="fas fa-lg fa-flask"></i></span> Laboratorio: ${producto.laboratorio}</li>
-                      <li class="small"><span class="fa-li"><i class="fas fa-lg fa-copyright"></i></span> Tipo: ${producto.tipo}</li>
-                      <li class="small"><span class="fa-li"><i class="fas fa-lg fa-pills"></i></span> Presentación: ${producto.presentacion}</li>
-                    </ul>
-                  </div>
-                  <div class="col-5 text-center">
-                    <img src="${producto.avatar}" alt="user-avatar" class="img-circle img-fluid">
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer">
-                <div class="text-right">
-                  <button class="avatar btn btn-sm bg-teal" title="Cambiar avatar" type="button" data-toggle="modal" data-target="#cambiar-logo-prod">
-                    <i class="fas fa-image"></i>
-                  </button>
-                  <button class="editar btn btn-sm btn-success" title="Editar" type="button" data-toggle="modal" data-target="#crear-producto">
-                    <i class="fas fa-pencil-alt"></i>
-                  </button>
-                  <button class="lote btn btn-sm btn-primary" title="Lote" type="button" data-toggle="modal" data-target="#crear-lote">
-                    <i class="fas fa-plus-square"></i>
-                  </button>
-                  <button class="borrar btn btn-sm btn-danger" title="Borrar">
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </div>
+              <div class="col-5 text-center">
+                <img src="${producto.avatar}" alt="user-avatar" class="img-circle img-fluid">
               </div>
             </div>
           </div>
-              `;
-          });
-          $('#productos').html(template);
+          <div class="card-footer">
+            <div class="text-right">
+              <button class="avatar btn btn-sm bg-teal" title="Cambiar avatar" type="button" data-toggle="modal" data-target="#cambiar-logo-prod">
+                <i class="fas fa-image"></i>
+              </button>
+              <button class="editar btn btn-sm btn-success" title="Editar" type="button" data-toggle="modal" data-target="#crear-producto">
+                <i class="fas fa-pencil-alt"></i>
+              </button>
+              <button class="borrar btn btn-sm btn-danger" title="Borrar">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+          `;
       });
+      $('#productos').html(template);
+    });
   }
 
   $(document).on('keyup','#buscar-producto',function(){
@@ -213,15 +211,6 @@ $(document).ready(function() {
           }
       });
       e.preventDefault();
-  });
-
-    $(document).on('click', '.lote', (e)=>{
-      funcion="cambiar_avatar";
-      const elemento =$(this)[0].activeElement.parentElement.parentElement.parentElement.parentElement;
-      const id=$(elemento).attr('prodId');
-      const nombre=$(elemento).attr('prodNombre');
-      $('#id_lote_prod').val(id);
-      $('#nombre_producto_lote').html(nombre);
   });
 
   $(document).on('click', '.editar', (e)=>{
@@ -305,24 +294,6 @@ $(document).ready(function() {
             )
           }
         })
-  });
-  
-  $('#form-crear-lote').submit(e=>{
-    let id_producto=$('#id_lote_prod').val();
-    let proveedor=$('#proveedor').val();
-    let stock=$('#stock').val();
-    let vencimiento=$('#vencimiento').val();
-    funcion='crear-lote';
-    $.post('../controlador/loteController.php', {funcion, vencimiento, stock, proveedor, id_producto}, (response)=>{
-      if(response=='add'){
-        $('#add-lote').hide('slow');
-        $('#add-lote').show(1000);
-        $('#add-lote').hide(3000);
-        $('#form-crear-lote').trigger('reset');
-        buscar_producto();
-    }
-    })
-    e.preventDefault();
   });
 
   $(document).on('click', '#button-reporte-productos', (e)=>{
