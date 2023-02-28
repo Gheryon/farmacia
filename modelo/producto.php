@@ -102,24 +102,24 @@ class Producto{
 	}
 	
 	function borrar($id){
-			//se busca el producto de la tabla de los lotes
-			$sql="SELECT * FROM lote WHERE lote_id_prod=:id";
+		//se busca si hay un lote asociado al producto, si lo hay, no se puede borrar
+		$sql="SELECT * FROM lote WHERE id_producto=:id AND estado='A'";
+		$query=$this->acceso->prepare($sql);
+		$query->execute(array(':id'=>$id));
+		$lote=$query->fetchAll();
+		if(!empty($lote)){
+			echo 'no borrado';
+		}else{
+			//se realiza eliminación lógica en lugar de la física, se cambia el estado de A(activo) a I (inactivo)
+			$sql="UPDATE producto SET estado='I' WHERE id_producto=:id";
 			$query=$this->acceso->prepare($sql);
 			$query->execute(array(':id'=>$id));
-			$lote=$query->fetchAll();
-			if(!empty($lote)){
-					echo 'no borrado';
+			if(!empty($query->execute(array(':id'=>$id)))){
+					echo 'borrado';
 			}else{
-					//se realiza eliminación lógica en lugar de la física, se cambia el estado de A(activo) a I (inactivo)
-					$sql="UPDATE producto SET estado='I' WHERE id_producto=:id";
-					$query=$this->acceso->prepare($sql);
-					$query->execute(array(':id'=>$id));
-					if(!empty($query->execute(array(':id'=>$id)))){
-							echo 'borrado';
-					}else{
-							echo 'noborrado';
-					}
+					echo 'noborrado';
 			}
+		}
 	}
 
 	function obtenerStock($id){
@@ -146,7 +146,7 @@ class Producto{
 	function rellenar_productos(){
 		$sql="SELECT id_producto, producto.nombre AS nombre, concentracion, adicional, precio, laboratorio.nombre AS laboratorio, tipo_producto.nombre AS tipo, presentacion.nombre AS presentacion
 		FROM `producto` 
-		JOIN laboratorio ON prod_lab=id_laboratorio
+		JOIN laboratorio ON prod_lab=id_laboratorio AND producto.estado='A'
 		JOIN tipo_producto ON prod_tip_prod=id_tip_prod
 		JOIN presentacion ON prod_present=id_presentacion ORDER BY producto.nombre;";
 		$query=$this->acceso->prepare($sql);

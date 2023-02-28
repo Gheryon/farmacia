@@ -97,7 +97,7 @@ class Laboratorio{
     }
 
     function rellenar_laboratorios(){
-        $sql="SELECT * FROM laboratorio order by nombre ASC";
+        $sql="SELECT * FROM laboratorio WHERE estado='A' order by nombre ASC";
         $query=$this->acceso->prepare($sql);
         $query->execute();
         $this->objetos=$query->fetchAll();

@@ -48,6 +48,7 @@ if($_SESSION['us_tipo']==1||$_SESSION['us_tipo']==3||$_SESSION['us_tipo']==2){
                   <th>Proveedor</th>
                   <th>Mes</th>
                   <th>Días</th>
+                  <th>Hora</th>
                 </tr>
               </thead>
               <tbody class="table-active">

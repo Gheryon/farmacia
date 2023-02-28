@@ -83,7 +83,7 @@ class Presentacion{
     }
 
     function rellenar_presentaciones(){
-        $sql="SELECT * FROM presentacion order by nombre ASC";
+        $sql="SELECT * FROM presentacion WHERE estado='A' order by nombre ASC";
         $query=$this->acceso->prepare($sql);
         $query->execute();
         $this->objetos=$query->fetchAll();

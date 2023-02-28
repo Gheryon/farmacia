@@ -76,7 +76,8 @@ $(document).ready(function(){
           { data: 'presentacion' },
           { data: 'proveedor' },
           { data: 'mes' },
-          { data: 'dia' }          
+          { data: 'dia' }, 
+          { data: 'hora' }          
         ],
         //para que en la columna de estado aparezcan los badges de colores
         columnDefs:[{

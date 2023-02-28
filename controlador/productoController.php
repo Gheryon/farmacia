@@ -148,7 +148,13 @@ if($_POST['funcion']=='traer_productos'){
         $producto->buscar_id($product->id);
         var_dump($producto);
         foreach ($producto->objetos as $objeto) {
-            $subtotal=$objeto->precio*$product->cantidad;
+            //para asegurarse de que el precio se multiplica por un valor numérico
+            if($product->cantidad==''){
+                $resultadoCantidad=0;
+            }else{
+                $resultadoCantidad=$product->cantidad;
+            }
+            $subtotal=$objeto->precio*$resultadoCantidad;
             $producto->obtenerStock($objeto->id_producto);
             foreach ($producto->objetos as $obj) {
                 $stock=$obj->total;
